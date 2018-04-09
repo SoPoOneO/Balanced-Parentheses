@@ -1,0 +1,56 @@
+<html>
+<h2>Generate Balanced Pairs of Parentheses</h2>
+<input type="number" id="num">
+<button type="button" onClick="generate()">Generate</button>
+<div id="output">
+</div>
+
+<script>
+
+function generate(){
+    var num = document.getElementById('num').value;
+    var combos = balancedParens(num);
+    var output = "<br><b>" + combos.length + " valid arrangements</b><br><br>";
+    for(combo of combos){
+        output += combo + "<br>";
+    }
+    document.getElementById('output').innerHTML = output;
+}
+
+// this was intentionally done NOT using recursion on a problem that would
+// have been better solved that way, just to see how I could do it.
+function balancedParens(num){
+
+    var results = [""];
+    var finished = false;
+
+    while(!finished){
+        finished = true;
+        var new_results = [];
+        for(let str of results){
+
+            if(str.length == 2*num){
+                new_results.push(str);
+            }else{
+                finished = false;
+
+                var l_count = (str.match(/\(/g) || []).length;
+                var r_count = (str.match(/\)/g) || []).length;
+
+                if(l_count < num){
+                    var str_l = str + "(";
+                    new_results.push(str_l);
+                }
+
+                if(l_count > r_count){
+                    var str_r = str + ")";
+                    new_results.push(str_r);
+                }
+            }
+        }
+        results = new_results;
+    }
+    return results;
+}
+</script>
+</html>
